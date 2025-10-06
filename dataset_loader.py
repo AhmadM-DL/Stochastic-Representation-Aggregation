@@ -41,7 +41,7 @@ class CustomDataset(Dataset):
         label_keys = ('image', 'img', 'pixels')
         for key in label_keys:
             if key in keys:
-                return keys
+                return key
         raise Exception(f"Unsupported dataset. Available keys: {keys}")
 
     def __getitem__(self, idx):
