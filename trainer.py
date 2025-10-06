@@ -120,6 +120,8 @@ def train_model(
             val_preds.extend(predicted.cpu().numpy())
             val_labels.extend(labels.cpu().numpy())
             val_losses.append(loss.item()) 
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
+            
         val_acc = (np.array(val_preds) == np.array(val_labels)).mean() * 100
         history['val_acc'].append(val_acc)
         history['val_loss'].append(np.mean(val_losses))
@@ -137,8 +139,9 @@ def train_model(
             test_preds.extend(predicted.cpu().numpy())
             test_labels.extend(labels.cpu().numpy())
             test_losses.append(loss.item())
-        test_acc = (np.array(test_preds) == np.array(test_labels)).mean() * 100
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
 
+        test_acc = (np.array(test_preds) == np.array(test_labels)).mean() * 100
         history['test_acc'].append(test_acc)
         history['test_loss'].append(np.mean(test_losses))
 
