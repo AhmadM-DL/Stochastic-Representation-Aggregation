@@ -7,6 +7,6 @@ def load_vit_model(model_name):
     
     model = AutoModel.from_pretrained(model_name)
     model = model.cuda()
-    preprocessor = AutoImageProcessor.from_pretrained(model_name)
+    preprocessor = AutoImageProcessor.from_pretrained(model_name, use_fast= True)
     model.eval()
     return model, preprocessor
