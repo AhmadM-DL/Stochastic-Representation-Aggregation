@@ -24,7 +24,7 @@ def load_checkpoint(path, classifier, optimizer):
     return classifier, optimizer, epoch, history
 
 def load_history_from_checkpoint(path):
-    checkpoint = torch.load(path)
+    checkpoint = torch.load(path, weights_only=False)
     return checkpoint.get('history', None)
 
 def train_model(

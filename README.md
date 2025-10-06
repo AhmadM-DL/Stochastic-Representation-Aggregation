@@ -26,7 +26,7 @@ python main.py --model <model_name> --dataset <dataset_name> --strategy <strateg
 ### 4. Aggregation strategies
 - `cls`: Use CLS token
 - `avg`: Global average pooling
-- `stochastic`: Sampled representation (mean + noise * sqrt(variance))
+- `sra`: Sampled representation (mean + noise * sqrt(variance))
 
 ## File Structure
 - `main.py`: Entry point, handles config and experiment loop
@@ -34,7 +34,7 @@ python main.py --model <model_name> --dataset <dataset_name> --strategy <strateg
 - `model_loader.py`: Loads models and preprocessors
 - `dataset_loader.py`: Loads datasets and builds dataloaders
 - `aggregation.py`: Aggregation functions
-- `configs/config.yaml`: Experiment configuration
+- `config.yaml`: Experiment configuration
 
 ## Citation
 If you use this codebase, please cite the original author.
