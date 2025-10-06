@@ -37,7 +37,7 @@ class CustomDataset(Dataset):
         raise Exception(f"Unsupported dataset. Available keys: {keys}")
     
     def __get_image_key__(self):
-        keys = self.column_names
+        keys = self.dataset.column_names
         label_keys = ('image', 'img', 'pixels')
         for key in label_keys:
             if key in keys:
