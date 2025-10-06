@@ -16,7 +16,7 @@ def save_checkpoint(path, classifier, optimizer, epoch, history):
     torch.save(checkpoint, path)
 
 def load_checkpoint(path, classifier, optimizer):
-    checkpoint = torch.load(path)
+    checkpoint = torch.load(path, weights_only=False)
     classifier.load_state_dict(checkpoint['classifier_state'])
     optimizer.load_state_dict(checkpoint['optimizer_state'])
     epoch = checkpoint['epoch']
@@ -121,7 +121,7 @@ def train_model(
             val_labels.extend(labels.cpu().numpy())
             val_losses.append(loss.item()) 
             pbar.set_postfix({'loss': f'{loss.item():.4f}'})
-            
+
         val_acc = (np.array(val_preds) == np.array(val_labels)).mean() * 100
         history['val_acc'].append(val_acc)
         history['val_loss'].append(np.mean(val_losses))
