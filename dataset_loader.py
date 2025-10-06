@@ -23,13 +23,13 @@ class CustomDataset(Dataset):
     def __init__(self, dataset, preprocessor):
         self.dataset = dataset
         self.preprocessor = preprocessor
-        self.num_classes = len(dataset['train'].unique(self.__get_label_key__()))
+        self.num_classes = len(dataset.unique(self.__get_label_key__()))
 
     def __len__(self):
         return len(self.dataset)
 
     def __get_label_key__(self):
-        keys = self.dataset['train'].column_names
+        keys = self.dataset.column_names
         label_keys = ('label', 'fine_label', 'category_id', 'target', 'labels', 'species', 'class')
         for key in label_keys:
             if key in keys:
@@ -37,7 +37,7 @@ class CustomDataset(Dataset):
         raise Exception(f"Unsupported dataset. Available keys: {keys}")
     
     def __get_image_key__(self):
-        keys = self.dataset['train'].column_names
+        keys = self.column_names
         label_keys = ('image', 'img', 'pixels')
         for key in label_keys:
             if key in keys:
