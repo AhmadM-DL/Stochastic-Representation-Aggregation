@@ -20,7 +20,7 @@ Edit `configs/config.yaml` to specify models, datasets, and training parameters.
 
 ### 3. Run experiments
 ```bash
-python main.py --model <model_name> --dataset <dataset_name> --strategy <strategy> --config configs/config.yaml --checkpoint_root_path results --checkpoint
+python main.py --model <model_name> --dataset <dataset_name> --strategy <strategy> --config config.yaml --checkpoint_root_path results --checkpoint
 ```
 
 ### 4. Aggregation strategies
