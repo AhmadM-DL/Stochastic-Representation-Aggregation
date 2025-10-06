@@ -1,5 +1,5 @@
 import yaml
-from dataset_loader import get_dataloaders
+from dataset_loader import get_dataloaders_from_hf
 from datasets import load_dataset
 from model_loader import load_vit_model
 from trainer import train_model
@@ -15,7 +15,7 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
     model, preprcessor = load_vit_model(model_id)
     dataset_hf = load_dataset(dataset_id)
 
-    train_dl, val_dl, test_dl = get_dataloaders(dataset_hf, train_args['batch_size'], preprcessor)
+    train_dl, val_dl, test_dl = get_dataloaders_from_hf(dataset_hf, train_args['batch_size'], preprcessor)
 
     for trial in range(train_args.get('num_trials')):
         print(f"Running trial {trial + 1} for model {model_name} on dataset {dataset_name}")
