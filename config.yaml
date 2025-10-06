@@ -1,0 +1,43 @@
+models:
+  - name: "ViT-B/16-sup"
+    huggingface_id: "google/vit-base-patch16-224"
+    pretraining: "supervised"
+  - name: "ViT-B/16-mae"
+    huggingface_id: "facebook/vit-mae-base"
+    pretraining: "self-supervised"
+  - name: "ViT-B/16-dino"
+    huggingface_id: "facebook/dino-vitb16"
+    pretraining: "self-supervised"
+  - name: "ViT-B/16-clip"
+    huggingface_id: "openai/clip-vit-base-patch16"
+    pretraining: "contrastive"
+
+datasets:
+  - name: "CIFAR-100"
+    huggingface_id: "cifar100"
+    num_classes: 100
+  - name: "Oxford Flowers-102"
+    huggingface_id: "oxford_flowers102"
+    num_classes: 102
+  - name: "Stanford Cars"
+    huggingface_id: "stanfordcars"
+    num_classes: 196
+  - name: "DTD"
+    huggingface_id: "dtd"
+    num_classes: 47
+  - name: "Aircraft"
+    huggingface_id: "fgvc_aircraft"
+    num_classes: 100
+  - name: "Fungi"
+    huggingface_id: "fungi_fungi_2021"
+    num_classes: 1394
+
+training:
+  num_epochs: 100
+  batch_size: 1024
+  learning_rate: 0.001
+  optimizer: "SGD"
+  momentum: 0.9
+  weight_decay: 0
+  scheduler: "cosine"
+  warmup_fraction: 0.1
