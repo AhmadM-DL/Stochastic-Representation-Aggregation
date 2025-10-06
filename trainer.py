@@ -7,7 +7,6 @@ from aggregation import get_aggregation_stratey
 import numpy as np
 
 def save_checkpoint(path, classifier, optimizer, epoch, history):
-    os.makedirs('checkpoints', exist_ok=True)
     checkpoint = {
         'classifier_state': classifier.state_dict(),
         'optimizer_state': optimizer.state_dict(),
@@ -42,7 +41,8 @@ def train_model(
     momentum,
     weight_decay,
     scheduler_type,
-    load_checkpoint=False
+    checkpoint_root_path,
+    load_checkpoint_flag
 ):
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is required for this implementation")
@@ -68,9 +68,13 @@ def train_model(
         'test_loss': []
     }
     start_epoch = 0
-    checkpoint_path = f'checkpoints/{model.config.name_or_path.replace("/", "_")}_{strategy}_{dataset_name}_{trial_number}.pt'
+    
+    if not os.path.exists(f"{checkpoint_root_path}/checkpoints"):
+        os.mkdir(f"{checkpoint_root_path}/checkpoints")
 
-    if load_checkpoint and os.path.exists(checkpoint_path):
+    checkpoint_path = f'{checkpoint_root_path}/checkpoints/{model.config.name_or_path.replace("/", "_")}_{strategy}_{dataset_name}_{trial_number}.pt'
+
+    if load_checkpoint_flag and os.path.exists(checkpoint_path):
         classifier, optimizer, start_epoch, history = load_checkpoint(checkpoint_path, classifier, optimizer)
 
     if scheduler_type == "cosine":

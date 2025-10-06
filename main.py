@@ -27,8 +27,8 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
                     train_args['momentum'],
                     train_args['weight_decay'],
                     train_args['scheduler'],
-                    load_checkpoint = load_checkpoint,
-                    saving_path = checkpoint_root_path)
+                    checkpoint_root_path,
+                    load_checkpoint)
 
 if __name__ == "__main__":
     import argparse
