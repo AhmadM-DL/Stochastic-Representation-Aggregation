@@ -37,7 +37,7 @@ if __name__ == "__main__":
     parser.add_argument('--dataset', '-d', type=str, required=True, help='Dataset name')
     parser.add_argument('--config', '-c',  type=str, default='configs/config.yaml', help='Path to config file')
     parser.add_argument('--strategy', '-s',  type=str, required=True, help='Aggregation strategy to use')
-    parser.add_argument('--checkpoint', '-chkp',  type=bool, default=True, help='Load from checkpoint')
+    parser.add_argument('--checkpoint', '-chkp', action='store_true', default=False, help='Load from checkpoint')
     parser.add_argument('--checkpoint_root_path', '-chkpp', type=str, default='results', help='Root path to save results')
     args = parser.parse_args()
     main(args.model, args.dataset, args.strategy, args.config, args.checkpoint_root_path, args.checkpoint)
