@@ -8,8 +8,8 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
     with open(config_path, 'r') as config_file:
         config = yaml.safe_load(config_file)
 
-    model_id = config['models'][model_name]['huggingface_id']
-    dataset_id = config['datasets'][dataset_name]['huggingface_id']
+    model_id = [model['huggingface_id'] for model in config['models'] if model['name']==model_name][0]
+    dataset_id = [dataset['huggingface_id'] for dataset in config['datasets'] if dataset["name"] == dataset_name][0]
     train_args = config['training']
 
     model, preprcessor = load_vit_model(model_id)
