@@ -47,7 +47,7 @@ def train_model(
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is required for this implementation")
 
-    num_classes = len(train_loader.dataset.num_classes)
+    num_classes = train_loader.dataset.num_classes
     classifier = nn.Linear(model.config.hidden_size, num_classes).cuda()
 
     if optimizer_type == "SGD":
