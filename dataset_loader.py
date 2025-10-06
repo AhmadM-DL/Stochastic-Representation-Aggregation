@@ -27,36 +27,27 @@ class CustomDataset(Dataset):
     def __len__(self):
         return len(self.dataset)
 
+    def __get_label_key__(self):
+        keys = self.dataset['train'].column_names
+        label_keys = ('label', 'fine_label', 'category_id', 'target', 'labels', 'species', 'class')
+        for key in label_keys:
+            if key in keys:
+                return key
+        raise Exception(f"Unsupported dataset. Available keys: {keys}")
+    
+    def __get_image_key__(self):
+        keys = self.dataset['train'].column_names
+        label_keys = ('image', 'img', 'pixels')
+        for key in label_keys:
+            if key in keys:
+                return keys
+        raise Exception(f"Unsupported dataset. Available keys: {keys}")
+
     def __getitem__(self, idx):
         item = self.dataset[idx]
-        # Handle different dataset formats
-        image = None
-        label = None
-        # Common cases
-        if 'image' in item:
-            image = item['image']
-        elif 'img' in item:
-            image = item['img']
-        elif 'pixels' in item:
-            image = item['pixels']
-        # Label field can vary
-        if 'label' in item:
-            label = item['label']
-        elif 'fine_label' in item:
-            label = item['fine_label']
-        elif 'category_id' in item:
-            label = item['category_id']
-        elif 'target' in item:
-            label = item['target']
-        elif 'labels' in item:
-            label = item['labels']
-        # Some datasets (e.g. Fungi) use 'species' or 'class'
-        elif 'species' in item:
-            label = item['species']
-        elif 'class' in item:
-            label = item['class']
-        # Apply model-specific preprocessing
+        label = item[self.__get_label_key__()]
+        image = item[self.__get_image_key__()]
         inputs = self.preprocessor(image, return_tensors="pt")
         pixel_values = inputs['pixel_values'].squeeze(0)
         return pixel_values, label
-    
+
