@@ -23,6 +23,7 @@ class CustomDataset(Dataset):
     def __init__(self, dataset, preprocessor):
         self.dataset = dataset
         self.preprocessor = preprocessor
+        self.num_classes = len(dataset['train'].unique(self.__get_label_key__()))
 
     def __len__(self):
         return len(self.dataset)
