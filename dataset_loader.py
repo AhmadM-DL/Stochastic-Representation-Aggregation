@@ -29,12 +29,34 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         item = self.dataset[idx]
-        image = item['image']
-        label = item['label']
-        
+        # Handle different dataset formats
+        image = None
+        label = None
+        # Common cases
+        if 'image' in item:
+            image = item['image']
+        elif 'img' in item:
+            image = item['img']
+        elif 'pixels' in item:
+            image = item['pixels']
+        # Label field can vary
+        if 'label' in item:
+            label = item['label']
+        elif 'fine_label' in item:
+            label = item['fine_label']
+        elif 'category_id' in item:
+            label = item['category_id']
+        elif 'target' in item:
+            label = item['target']
+        elif 'labels' in item:
+            label = item['labels']
+        # Some datasets (e.g. Fungi) use 'species' or 'class'
+        elif 'species' in item:
+            label = item['species']
+        elif 'class' in item:
+            label = item['class']
         # Apply model-specific preprocessing
         inputs = self.preprocessor(image, return_tensors="pt")
         pixel_values = inputs['pixel_values'].squeeze(0)
-        
         return pixel_values, label
     
