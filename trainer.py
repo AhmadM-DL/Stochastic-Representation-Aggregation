@@ -93,7 +93,7 @@ def train_model(
             inputs, labels = inputs.cuda(), labels.cuda()
             optimizer.zero_grad()
             with torch.no_grad():
-                outputs = model(inputs)
+                outputs = model(**inputs)
                 features = get_raw_features(model, outputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
