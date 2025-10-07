@@ -18,7 +18,7 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
     train_dl, val_dl, test_dl = get_dataloaders_from_hf(dataset_hf, train_args['batch_size'], preprcessor)
 
     for trial in range(train_args.get('num_trials')):
-        print(f"Running trial {trial + 1} for model {model_name} on dataset {dataset_name}")
+        print(f"Running trial {trial + 1} for model {model_name} on dataset {dataset_name} using {strategy}")
         train_model(model, dataset_name, strategy, trial,
                     train_dl, val_dl, test_dl,
                     train_args['num_epochs'],
@@ -29,6 +29,7 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
                     train_args['scheduler'],
                     checkpoint_root_path,
                     load_checkpoint)
+        print(f"Finished trial {trial + 1} for model {model_name} on dataset {dataset_name} using {strategy}")
 
 if __name__ == "__main__":
     import argparse
