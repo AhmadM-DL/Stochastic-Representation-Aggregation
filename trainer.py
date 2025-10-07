@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 import os
 from aggregation import get_aggregation_stratey
+from model_loader import get_model_hidden_size, get_raw_features
 import numpy as np
 
 def save_checkpoint(path, classifier, optimizer, epoch, history):
@@ -48,7 +49,7 @@ def train_model(
         raise RuntimeError("CUDA is required for this implementation")
 
     num_classes = train_loader.dataset.num_classes
-    classifier = nn.Linear(model.config.hidden_size, num_classes).cuda()
+    classifier = nn.Linear(get_model_hidden_size(model), num_classes).cuda()
 
     if optimizer_type == "SGD":
         optimizer = optim.SGD(classifier.parameters(), lr=learning_rate, momentum=momentum, weight_decay=weight_decay)
@@ -92,7 +93,8 @@ def train_model(
             inputs, labels = inputs.cuda(), labels.cuda()
             optimizer.zero_grad()
             with torch.no_grad():
-                features = model(inputs).last_hidden_state
+                outputs = model(inputs)
+                features = get_raw_features(model, outputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)
@@ -112,7 +114,8 @@ def train_model(
         for inputs, labels in tqdm(val_loader, desc='Evaluating (val)', leave=False):
             inputs, labels = inputs.cuda(), labels.cuda()
             with torch.no_grad():
-                features = model(inputs).last_hidden_state
+                outputs = model(inputs)
+                features = get_raw_features(model, outputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)
@@ -131,7 +134,8 @@ def train_model(
         for inputs, labels in tqdm(test_loader, desc='Evaluating (test)', leave=False):
             inputs, labels = inputs.cuda(), labels.cuda()
             with torch.no_grad():
-                features = model(inputs).last_hidden_state
+                outputs = model(inputs)
+                features = get_raw_features(model, outputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)

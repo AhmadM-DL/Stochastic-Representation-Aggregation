@@ -10,3 +10,17 @@ def load_vit_model(model_name):
     preprocessor = AutoImageProcessor.from_pretrained(model_name, use_fast= True)
     model.eval()
     return model, preprocessor
+
+def get_model_hidden_size(model):
+    model_name = type(model).__name__ 
+    if "clip" in model_name.lower():
+        return model.vision_model.config.hidden_size
+    else:
+        return model.config.hidden_size
+
+def get_raw_features(model, outputs):
+    model_name = type(model).__name__ 
+    if "clip" in model_name.lower():
+        return outputs.vision_model_output.last_hidden_state
+    else:
+        return outputs.last_hidden_state
