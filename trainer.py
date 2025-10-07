@@ -93,8 +93,7 @@ def train_model(
             inputs, labels = inputs.cuda(), labels.cuda()
             optimizer.zero_grad()
             with torch.no_grad():
-                outputs = model(**inputs)
-                features = get_raw_features(model, outputs)
+                features = get_raw_features(model, inputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)
@@ -114,8 +113,7 @@ def train_model(
         for inputs, labels in tqdm(val_loader, desc='Evaluating (val)', leave=False):
             inputs, labels = inputs.cuda(), labels.cuda()
             with torch.no_grad():
-                outputs = model(inputs)
-                features = get_raw_features(model, outputs)
+                features = get_raw_features(model, inputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)
@@ -134,8 +132,7 @@ def train_model(
         for inputs, labels in tqdm(test_loader, desc='Evaluating (test)', leave=False):
             inputs, labels = inputs.cuda(), labels.cuda()
             with torch.no_grad():
-                outputs = model(inputs)
-                features = get_raw_features(model, outputs)
+                features = get_raw_features(model, inputs)
                 features = get_aggregation_stratey(strategy)(features)
             outputs = classifier(features)
             loss = criterion(outputs, labels)

@@ -18,9 +18,11 @@ def get_model_hidden_size(model):
     else:
         return model.config.hidden_size
 
-def get_raw_features(model, outputs):
+def get_raw_features(model, inputs):
     model_name = type(model).__name__ 
     if "clip" in model_name.lower():
+        outputs = model({"pixel_values": inputs})
         return outputs.vision_model_output.last_hidden_state
     else:
+        outputs = model(inputs)
         return outputs.last_hidden_state
