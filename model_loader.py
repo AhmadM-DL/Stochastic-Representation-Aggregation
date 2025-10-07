@@ -22,7 +22,7 @@ def get_raw_features(model, inputs):
     model_name = type(model).__name__ 
     if "clip" in model_name.lower():
         outputs = model.vision_model(inputs)
-        return outputs.vision_model_output.last_hidden_state
+        return outputs.last_hidden_state
     else:
         outputs = model(inputs)
         return outputs.last_hidden_state
