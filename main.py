@@ -1,6 +1,5 @@
 import yaml
-from dataset_loader import get_dataloaders_from_hf
-from datasets import load_dataset
+from dataset_loader import get_dataloaders_from_hf, get_as_hf_dataset
 from model_loader import load_vit_model
 from trainer import train_model
 
@@ -13,7 +12,7 @@ def main(model_name, dataset_name, strategy, config_path, checkpoint_root_path, 
     train_args = config['training']
 
     model, preprcessor = load_vit_model(model_id)
-    dataset_hf = load_dataset(dataset_id)
+    dataset_hf = get_as_hf_dataset(dataset_id)
 
     train_dl, val_dl, test_dl = get_dataloaders_from_hf(dataset_hf, train_args['batch_size'], preprcessor)
 

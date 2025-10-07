@@ -1,4 +1,6 @@
 from torch.utils.data import Dataset, DataLoader
+from datasets import load_dataset
+import torchvision.datasets as tv_datasets
 
 def get_dataloaders_from_hf(dataset_hf, batch_size, preprocessor, num_workers=2):
 
@@ -9,9 +11,9 @@ def get_dataloaders_from_hf(dataset_hf, batch_size, preprocessor, num_workers=2)
     val_dataset_hf = split_dataset_hf['test']
     test_dataset_hf = dataset_hf['test']
 
-    train_dataset = CustomDataset(train_dataset_hf, preprocessor)
-    val_dataset = CustomDataset(val_dataset_hf, preprocessor)
-    test_dataset = CustomDataset(test_dataset_hf, preprocessor)
+    train_dataset = HFDataset(train_dataset_hf, preprocessor)
+    val_dataset = HFDataset(val_dataset_hf, preprocessor)
+    test_dataset = HFDataset(test_dataset_hf, preprocessor)
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
@@ -19,7 +21,11 @@ def get_dataloaders_from_hf(dataset_hf, batch_size, preprocessor, num_workers=2)
 
     return train_loader, val_loader, test_loader
 
-class CustomDataset(Dataset):
+def get_as_hf_dataset(dataset_id):
+    return load_dataset(dataset_id)
+
+
+class HFDataset(Dataset):
     def __init__(self, dataset, preprocessor):
         self.dataset = dataset
         self.preprocessor = preprocessor
