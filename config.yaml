@@ -33,7 +33,7 @@ datasets:
     num_classes: 1394
 
 training:
-  num_epochs: 100
+  num_epochs: 10
   batch_size: 64
   learning_rate: 0.001
   optimizer: "SGD"
