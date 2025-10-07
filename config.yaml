@@ -40,4 +40,4 @@ training:
   momentum: 0.9
   weight_decay: 0
   scheduler: "cosine"
-  num_trials: 10
+  num_trials: 1
